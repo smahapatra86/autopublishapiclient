@@ -48,8 +48,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Install Autorest tool
-      uses: actions/setup-node@v1
+    - uses: actions/setup-node@v1
+
+    - name: Install Autorest tool      
       run:  npm install -g autorest
 
     - name: Generate client
