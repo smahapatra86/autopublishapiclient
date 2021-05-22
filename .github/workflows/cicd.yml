@@ -12,6 +12,7 @@ on:
   - main
   paths:
   - 'SomeServices/**'
+  - '.github/workflows/**'
 
 jobs:
   build:
