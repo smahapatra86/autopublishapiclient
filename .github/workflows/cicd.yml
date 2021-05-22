@@ -1,0 +1,69 @@
+name: SomeServices CICD
+
+env:
+  PROJPATH: './SomeServices'
+  DOTNET_VERSION: '5.0.x'
+  SWASHBUCKLE_VERSION: '5.6.3'
+  CLENTPATH: './client'
+
+on:
+ push: 
+  branches:
+  - main
+  paths:
+  - 'SomeServices/**'
+
+jobs:
+  build:
+   runs-on: windows-latest
+   steps:
+   - uses: actions/checkout@v2
+
+   - name: Setup .NET Core
+     uses: actions/setup-dotnet@v1
+     with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+   - name: Install dependencies
+     run: dotnet restore '${{ env.PROJPATH }}/SomeServices.csproj'
+
+   - name: Build - Release
+     run: dotnet build '${{ env.PROJPATH }}/SomeServices.csproj' --configuration Release --no-restore   
+
+  generate-swagger:
+    runs-on: windows-latest
+    needs: build
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install Sawshbuckle tool
+      run: dotnet tool install -g --version ${{ env.PROJPATH }} Swashbuckle.AspNetCore.Cli
+
+    - name: Run Swagger
+      run: swagger tofile --output ${{ env.PROJPATH }}/swagger/swagger.json ${{ env.PROJPATH }}/bin/Release/net5.0/SomeServices.dll v1
+
+  generate-build-client:
+    runs-on: windows-latest
+    needs: [build, generate-swagger]
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install Autorest tool
+      uses: actions/setup-node@v1
+      run:  npm install -g autorest
+
+    - name: Generate client
+      run: autorest --input-file=${{ env.PROJPATH }}/swagger/swagger.json --output-folder=${{ env.CLENTPATH }}/generated --namespace=SomeServices.Client --csharp
+
+    - name: Install dependencies for client
+      run: dotnet restore '${{ env.CLENTPATH }}/SomeServices.Client.csproj'
+
+    - name: Build Client - Release
+      run: dotnet build '${{ env.CLENTPATH }}/SomeServices.Client.csproj' --configuration Release --no-restore
+
+    - name: Pack Client - Release
+      run: dotnet pack '${{ env.CLENTPATH }}/SomeServices.Client.csproj' --output ${{ env.CLENTPATH }}/nupkgs --no-restore
+
+    - name: Publish NuGet Client
+      run: dotnet nuget push ${{ env.CLENTPATH }}/nupkgs/SomeServices.Client*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+
