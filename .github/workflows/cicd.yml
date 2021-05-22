@@ -38,7 +38,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Install Sawshbuckle tool
-      run: dotnet tool install -g --version ${{ env.PROJPATH }} Swashbuckle.AspNetCore.Cli
+      run: dotnet tool install -g --version ${{ env.SWASHBUCKLE_VERSION }} Swashbuckle.AspNetCore.Cli
 
     - name: Run Swagger
       run: swagger tofile --output ${{ env.PROJPATH }}/swagger/swagger.json ${{ env.PROJPATH }}/bin/Release/net5.0/SomeServices.dll v1
