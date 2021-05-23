@@ -40,11 +40,11 @@ jobs:
     - name: Install Sawshbuckle tool
       run: dotnet tool install -g --version ${{ env.SWASHBUCKLE_VERSION }} Swashbuckle.AspNetCore.Cli
 
-    - name: Build Project - Release
-      run: dotnet build '${{ env.PROJPATH }}/SomeServices.csproj' --configuration Release --no-restore
+    #- name: Build Project - Release
+    #  run: dotnet build '${{ env.PROJPATH }}/SomeServices.csproj' --configuration Release --no-restore
 
     - name: Directory content
-      run: ls ${{ env.PROJPATH }}/bin/Release/net5.0
+      run: ls ${{ env.PROJPATH }}
 
     #- name: Run Swagger
     #  run: swagger tofile --output ${{ env.PROJPATH }}/swagger/swagger.json ${{ env.PROJPATH }}/bin/Release/net5.0/SomeServices.dll v1
