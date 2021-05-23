@@ -49,16 +49,14 @@ jobs:
     - name: Install Sawshbuckle tool
       run: dotnet tool install -g --version ${{ env.SWASHBUCKLE_VERSION }} Swashbuckle.AspNetCore.Cli
 
-    - uses: actions/download-artifact@v2
+    - name: Download artifact 
+      uses: actions/download-artifact@v2
       with: 
         name: ${{ env.ARTIFACTNAME }}
         path: ${{ env.ARTIFACTPATH }}
 
-    - name: Directory content
-      run: ls ${{ env.ARTIFACTPATH }}
-
-    #- name: Run Swagger
-    #  run: swagger tofile --output ${{ env.PROJPATH }}/swagger/swagger.json ${{ env.PROJPATH }}/bin/Release/net5.0/SomeServices.dll v1
+    - name: Run Swagger
+      run: swagger tofile --output ${{ env.PROJPATH }}/swagger/swagger.json ${{ env.ARTIFACTPATH }}/bin/Release/net5.0/SomeServices.dll v1
 
   #generate-build-client:
   #  runs-on: windows-latest
