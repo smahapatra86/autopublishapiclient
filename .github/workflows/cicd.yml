@@ -56,7 +56,10 @@ jobs:
         path: ${{ env.ARTIFACTPATH }}
 
     - name: Run Swagger
-      run: swagger tofile --output ${{ env.PROJPATH }}/swagger/swagger.json ${{ env.ARTIFACTPATH }}/bin/Release/net5.0/SomeServices.dll v1
+      run: swagger tofile --output ${{ env.PROJPATH }}/swagger/swagger.json ${{ env.ARTIFACTPATH }}/SomeServices.dll v1
+
+    - name: Directory content
+      run: ls ${{ env.PROJPATH }}/swagger
 
   #generate-build-client:
   #  runs-on: windows-latest
