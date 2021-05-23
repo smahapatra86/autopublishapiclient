@@ -61,29 +61,29 @@ jobs:
     - name: Directory content
       run: ls ${{ env.PROJPATH }}
 
-  #generate-build-client:
-  #  runs-on: windows-latest
-  #  needs: [build, generate-swagger]
-  #  steps:
-  #  - uses: actions/checkout@v2
+  generate-build-client:
+    runs-on: windows-latest
+    needs: [generate-swagger]
+    steps:
+    - uses: actions/checkout@v2
 
-  #  - uses: actions/setup-node@v1
+    - uses: actions/setup-node@v1
 
-  #  - name: Install Autorest tool      
-  #    run:  npm install -g autorest
+    - name: Install Autorest tool      
+      run:  npm install -g autorest
 
-  #  - name: Generate client
-  #    run: autorest --input-file=${{ env.PROJPATH }}/swagger/swagger.json --output-folder=${{ env.CLENTPATH }}/generated --namespace=SomeServices.Client --csharp
+    - name: Generate client
+      run: autorest --input-file=${{ env.PROJPATH }}/swagger.json --output-folder=${{ env.CLENTPATH }}/generated --namespace=SomeServices.Client --csharp
 
-  #  - name: Install dependencies for client
-  #    run: dotnet restore '${{ env.CLENTPATH }}/SomeServices.Client.csproj'
+    - name: Install dependencies for client
+      run: dotnet restore '${{ env.CLENTPATH }}/SomeServices.Client.csproj'
 
-  #  - name: Build Client - Release
-  #    run: dotnet build '${{ env.CLENTPATH }}/SomeServices.Client.csproj' --configuration Release --no-restore
+    - name: Build Client - Release
+      run: dotnet build '${{ env.CLENTPATH }}/SomeServices.Client.csproj' --configuration Release --no-restore
 
-  #  - name: Pack Client - Release
-  #    run: dotnet pack '${{ env.CLENTPATH }}/SomeServices.Client.csproj' --output ${{ env.CLENTPATH }}/nupkgs --no-restore
+    - name: Pack Client - Release
+      run: dotnet pack '${{ env.CLENTPATH }}/SomeServices.Client.csproj' --output ${{ env.CLENTPATH }}/nupkgs --no-restore
 
-  #  - name: Publish NuGet Client
-  #    run: dotnet nuget push ${{ env.CLENTPATH }}/nupkgs/SomeServices.Client*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+    - name: Publish NuGet Client
+      run: dotnet nuget push ${{ env.CLENTPATH }}/nupkgs/SomeServices.Client*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
 
