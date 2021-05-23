@@ -6,8 +6,7 @@ env:
   SWASHBUCKLE_VERSION: '5.6.3'
   CLENTPATH: './client'
   ARTIFACTPATH: './artifacts'
-  DLLARTIFACTNAME: 'someservicedll'
-  SWAGGERDEPSARTIFACTNAME: 'someservicedeps'
+  ARTIFACTNAME: 'someservice'
 
 on:
  push: 
@@ -34,17 +33,11 @@ jobs:
    - name: Build - Release
      run: dotnet build '${{ env.PROJPATH }}/SomeServices.csproj' --configuration Release --no-restore   
 
-   - name: Upload Dll artifact
+   - name: Upload build artifact
      uses: actions/upload-artifact@v2
      with:
-        name: ${{ env.DLLARTIFACTNAME }}
-        path: ${{ env.PROJPATH }}/bin/Release/net5.0/SomeServices.dll
-
-   - name: Upload Deps artifact
-     uses: actions/upload-artifact@v2
-     with:
-        name: ${{ env.SWAGGERDEPSARTIFACTNAME }}
-        path: ${{ env.PROJPATH }}/bin/Release/net5.0/SomeServices.deps.json
+        name: ${{ env.ARTIFACTNAME }}
+        path: ${{ env.PROJPATH }}/bin/Release/net5.0/
 
 
   generate-swagger:
@@ -56,16 +49,10 @@ jobs:
     - name: Install Sawshbuckle tool
       run: dotnet tool install -g --version ${{ env.SWASHBUCKLE_VERSION }} Swashbuckle.AspNetCore.Cli
 
-    - name: Download Dll artifact 
+    - name: Download build artifact 
       uses: actions/download-artifact@v2
       with: 
-        name: ${{ env.DLLARTIFACTNAME }}
-        path: ${{ env.ARTIFACTPATH }}
-
-    - name: Download Deps artifact 
-      uses: actions/download-artifact@v2
-      with: 
-        name: ${{ env.SWAGGERDEPSARTIFACTNAME }}
+        name: ${{ env.ARTIFACTNAME }}
         path: ${{ env.ARTIFACTPATH }}
 
     - name: Run Swagger
