@@ -60,8 +60,8 @@ jobs:
     - name: Run Swagger
       run: swagger tofile --output ${{ env.PROJPATH }}/swagger.json ${{ env.ARTIFACTPATH }}/SomeServices.dll v1
 
-    - name: Directory content
-      run: ls ${{ env.PROJPATH }}
+    - name: swagger content
+      run: ${{ env.PROJPATH }}/swagger.json
 
   generate-build-client:
     runs-on: windows-latest
