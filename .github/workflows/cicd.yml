@@ -74,6 +74,9 @@ jobs:
     - name: Install Autorest tool      
       run:  npm install -g autorest
 
+    - name: swagger content
+      run: cat ${{ env.PROJPATH }}/swagger.json
+
     - name: Generate client
       run: autorest --input-file=${{ env.PROJPATH }}/swagger.json --output-folder=${{ env.CLENTPATH }}/generated --namespace=SomeServices.Client --csharp
 
