@@ -9,6 +9,8 @@ env:
   ARTIFACTNAME: 'someservice'
 
 on:
+ workflow_dispatch:
+  
  push: 
   branches:
   - main
