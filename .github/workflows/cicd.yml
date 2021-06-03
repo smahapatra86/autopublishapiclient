@@ -102,6 +102,9 @@ jobs:
     - name: Pack Client - Release
       run: dotnet pack '${{ env.CLENTPATH }}/SomeServices.Client.csproj' --output ${{ env.CLENTPATH }}/nupkgs --no-restore
 
-    - name: Publish NuGet Client
-      run: dotnet nuget push ${{ env.CLENTPATH }}/nupkgs/SomeServices.Client.*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+    #- name: Publish NuGet Client
+    #  run: dotnet nuget push ${{ env.CLENTPATH }}/nupkgs/SomeServices.Client*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+
+    - name: Directory content
+      run: ls ${{ env.CLENTPATH }}/nupkgs
 
