@@ -106,5 +106,5 @@ jobs:
       run: ls ${{ env.CLENTPATH }}/nupkgs
 
     - name: Publish NuGet Client
-      run: dotnet nuget push ${{ env.CLENTPATH }}\nupkgs\SomeServices.Client*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+      run: dotnet nuget push ${{ env.CLENTPATH }}/nupkgs/SomeServices.Client*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
 
